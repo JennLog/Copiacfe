@@ -17,8 +17,12 @@ MODELO_PREFERIDO = "models/gemini-1.5-pro-latest"
 MODELO_ALTERNATIVO = "models/gemini-1.5-flash-latest"
 
 # Cargar contenido normativo desde archivo
-with open("fragmentos.txt", "r", encoding="utf-8") as f:
-    todos_los_fragmentos = f.read()
+try:
+    with open("fragmentos.txt", "r", encoding="utf-8") as f:
+        todos_los_fragmentos = f.read()
+except Exception as e:
+    raise RuntimeError(f"❌ Error al cargar fragmentos.txt: {e}")
+
 
 # Función para generar respuesta con un modelo específico
 def generar_respuesta_con_modelo(modelo_id, prompt):
@@ -28,7 +32,14 @@ def generar_respuesta_con_modelo(modelo_id, prompt):
 
 # Función principal que responde usando IA
 def responder_con_ia(pregunta):
-    prompt = f"""
+    try:
+        prompt = f"""..."""  # tu prompt aquí
+        respuesta = generar_respuesta_con_modelo(MODELO_PREFERIDO, prompt)
+        return respuesta, MODELO_PREFERIDO, []
+    except Exception as e:
+        print(f"❌ Error interno: {e}")
+        return f"❌ Error: {e}", "Error", []
+
 Eres un asistente técnico experto en normas eléctricas. A continuación hay contenido normativo y una consulta.
 Responde solamente con base en el contenido proporcionado, de forma clara y profesional.
 
