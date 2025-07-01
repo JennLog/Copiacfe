@@ -41,7 +41,7 @@ def responder_con_ia(pregunta):
     fragmentos_relevantes = buscar_fragmentos_relevantes(pregunta, todos_los_fragmentos)
     contenido_util = "\n\n".join(fragmentos_relevantes)
 
-   prompt = f"""
+    prompt = f"""
 Eres un asistente técnico experto en normas eléctricas mexicanas. A continuación se te proporciona contenido normativo (fragmentos) y una consulta.
 
 Tu tarea es analizar cuidadosamente el contenido para dar una respuesta precisa y profesional, aunque la información no esté expresada literalmente. Si puedes inferir una respuesta del contexto, hazlo.
@@ -55,7 +55,6 @@ PREGUNTA: {pregunta}
 
 RESPUESTA:
 """
-
     try:
         respuesta = generar_respuesta_con_modelo(MODELO_PREFERIDO, prompt)
         return respuesta, MODELO_PREFERIDO, fragmentos_relevantes
@@ -65,5 +64,8 @@ RESPUESTA:
             "Límite alcanzado",
             fragmentos_relevantes,
         )
+    except Exception as e:
+        return f"❌ Error: {e}", "Error", fragmentos_relevantes
+
     except Exception as e:
         return f"❌ Error: {e}", "Error", fragmentos_relevantes
