@@ -1,3 +1,7 @@
+# Limitar a los primeros 2000 caracteres
+contenido_util = todos_los_fragmentos[:2000]
+
+
 1 ===
 
 CONSTRUCCIÓN DE SISTEMAS SUBTERRÁNEOS
