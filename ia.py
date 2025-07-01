@@ -18,11 +18,17 @@ MODELO_ALTERNATIVO = "models/gemini-1.5-flash-latest"
 with open("fragmentos.txt", "r", encoding="utf-8") as f:
     todos_los_fragmentos = f.read().split("\n\n")  # separa por doble salto de línea
 
-# Buscar fragmentos relevantes
+
+import difflib
+
 def buscar_fragmentos_relevantes(pregunta, fragmentos, max_resultados=3):
-    pregunta_lower = pregunta.lower()
-    relevantes = [frag for frag in fragmentos if any(p in frag.lower() for p in pregunta_lower.split())]
-    return relevantes[:max_resultados] if relevantes else fragmentos[:1]
+    # Calcular similitud entre la pregunta y cada fragmento
+    puntuaciones = [(frag, difflib.SequenceMatcher(None, pregunta.lower(), frag.lower()).ratio()) for frag in fragmentos]
+    # Ordenar por similitud descendente
+    puntuaciones.sort(key=lambda x: x[1], reverse=True)
+    # Devolver los fragmentos más similares
+    return [frag for frag, _ in puntuaciones[:max_resultados]]
+
 
 # Generar respuesta con modelo
 def generar_respuesta_con_modelo(modelo_id, prompt):
