@@ -14,14 +14,11 @@
         <h2>Pregunta: {{ pregunta }}</h2>
         <p><strong>Respuesta:</strong> {{ respuesta }}</p>
     {% endif %}
-    {% if fragmentos %}
-  <h3>Fragmentos utilizados:</h3>
-  <ul>
-    {% for frag in fragmentos %}
-      <li>{{ frag }}</li>
-    {% endfor %}
-  </ul>
+    {% if mostrar_fragmentos %}
+  <h3>Fragmento utilizado:</h3>
+  <pre>{{ fragmentos[0] }}</pre>
 {% endif %}
+
 
 </body>
 </html>
