@@ -6,15 +6,21 @@ app = Flask(__name__)
 @app.route("/", methods=["GET", "POST"])
 def index():
     respuesta_ia = ""
-    pregunta = ""
-    modelo = ""
+    modelo_usado = ""
     fragmentos = []
-    
-    if request.method == "POST":
-        pregunta = request.form.get("consulta", "")
-        respuesta_ia, modelo, fragmentos = responder_con_ia(pregunta)
-        
-    return render_template("index.html", respuesta=respuesta_ia, pregunta=pregunta, modelo=modelo, fragmentos=fragmentos)
+    pregunta = ""
+    mostrar_fragmentos = False
 
-if __name__ == "__main__":
-    app.run(debug=False)
+    if request.method == "POST":
+        pregunta = request.form["consulta"]
+        mostrar_fragmentos = "ver_fragmento" in request.form
+        respuesta_ia, modelo_usado, fragmentos = responder_con_ia(pregunta)
+
+    return render_template(
+        "index.html",
+        respuesta=respuesta_ia,
+        pregunta=pregunta,
+        modelo=modelo_usado,
+        fragmentos=fragmentos,
+        mostrar_fragmentos=mostrar_fragmentos
+    )
