@@ -41,7 +41,7 @@ def responder_con_ia(pregunta):
     fragmentos_relevantes = buscar_fragmentos_relevantes(pregunta, todos_los_fragmentos)
     contenido_util = "\n\n".join(fragmentos_relevantes)
 
-    prompt = f"""
+   prompt = f"""
 Eres un asistente técnico experto en normas eléctricas. A continuación hay contenido normativo y una consulta.
 Responde solamente con base en el contenido proporcionado, de forma clara y profesional.
 
