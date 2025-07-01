@@ -18,6 +18,14 @@
   <h3>Fragmento utilizado:</h3>
   <pre>{{ fragmentos[0] }}</pre>
 {% endif %}
+<form method="POST">
+  <label for="consulta">Consulta:</label>
+  <input type="text" name="consulta" id="consulta" value="{{ pregunta }}" required>
+  <br>
+  <label><input type="checkbox" name="ver_fragmento"> Mostrar fragmento utilizado</label>
+  <br>
+  <button type="submit">Consultar</button>
+</form>
 
 
 </body>
