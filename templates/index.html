@@ -1,29 +1,18 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Buscador de Normas Eléctricas</title>
+    <meta charset="utf-8">
+    <title>Consulta IA</title>
 </head>
 <body>
-    <h1>🔌 Buscador de Normas Eléctricas</h1>
-    <form method="POST">
-        <label for="consulta">Escribe tu pregunta:</label><br>
-        <textarea name="consulta" rows="4" cols="60">{{ pregunta }}</textarea><br><br>
-        <input type="submit" value="Buscar">
+    <h1>Consulta IA</h1>
+    <form method="post">
+        <input type="text" name="consulta" placeholder="Escribe tu pregunta" required>
+        <button type="submit">Consultar</button>
     </form>
-
-    {% if respuesta %}
-        <h2>Respuesta:</h2>
-        <div style="white-space: pre-wrap;">{{ respuesta }}</div>
+    {% if pregunta %}
+        <h2>Pregunta: {{ pregunta }}</h2>
+        <p><strong>Respuesta:</strong> {{ respuesta }}</p>
     {% endif %}
- {% if fragmentos %}
-    <h3>Fragmentos usados como contexto:</h3>
-    <ul>
-        {% for frag in fragmentos %}
-            <li style="margin-bottom: 1em; white-space: pre-wrap;">{{ frag }}</li>
-        {% endfor %}
-    </ul>
-{% endif %}
-   
 </body>
 </html>
