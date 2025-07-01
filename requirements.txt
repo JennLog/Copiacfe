@@ -1,5 +1,4 @@
 flask
 gunicorn
-faiss-cpu
-sentence-transformers
 python-dotenv
+google-generativeai
