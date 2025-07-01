@@ -14,23 +14,11 @@ genai.configure(api_key=api_key)
 MODELO_PREFERIDO = "models/gemini-1.5-pro-latest"
 MODELO_ALTERNATIVO = "models/gemini-1.5-flash-latest"
 
-# Cargar fragmentos como lista
+# Leer todo el contenido de los documentos como un solo bloque
 with open("fragmentos.txt", "r", encoding="utf-8") as f:
-    todos_los_fragmentos = f.read().split("\n\n")  # separa por doble salto de línea
+    contenido_completo = f.read()
 
-
-import difflib
-
-def buscar_fragmentos_relevantes(pregunta, fragmentos, max_resultados=3):
-    # Calcular similitud entre la pregunta y cada fragmento
-    puntuaciones = [(frag, difflib.SequenceMatcher(None, pregunta.lower(), frag.lower()).ratio()) for frag in fragmentos]
-    # Ordenar por similitud descendente
-    puntuaciones.sort(key=lambda x: x[1], reverse=True)
-    # Devolver los fragmentos más similares
-    return [frag for frag, _ in puntuaciones[:max_resultados]]
-
-
-# Generar respuesta con modelo
+# Función para generar la respuesta
 def generar_respuesta_con_modelo(modelo_id, prompt):
     modelo = genai.GenerativeModel(modelo_id)
     respuesta = modelo.generate_content(prompt)
@@ -38,18 +26,12 @@ def generar_respuesta_con_modelo(modelo_id, prompt):
 
 # Función principal
 def responder_con_ia(pregunta):
-    fragmentos_relevantes = buscar_fragmentos_relevantes(pregunta, todos_los_fragmentos)
-    contenido_util = "\n\n".join(fragmentos_relevantes)
-
     prompt = f"""
-Eres un asistente técnico experto en normas eléctricas mexicanas. A continuación se te proporciona contenido normativo (fragmentos) y una consulta.
-
-Tu tarea es analizar cuidadosamente el contenido para dar una respuesta precisa y profesional, aunque la información no esté expresada literalmente. Si puedes inferir una respuesta del contexto, hazlo.
-
-Nunca digas "no se proporciona información" a menos que estés absolutamente seguro. No inventes datos externos.
+Eres un asistente técnico experto en normas eléctricas. A continuación se presenta el contenido completo de las normas y una consulta.
+Responde únicamente usando el contenido proporcionado. Si la respuesta no está explícita, di que no se encontró.
 
 CONTENIDO:
-{contenido_util}
+{contenido_completo}
 
 PREGUNTA: {pregunta}
 
@@ -57,15 +39,10 @@ RESPUESTA:
 """
     try:
         respuesta = generar_respuesta_con_modelo(MODELO_PREFERIDO, prompt)
-        return respuesta, MODELO_PREFERIDO, fragmentos_relevantes
+        return respuesta, MODELO_PREFERIDO, [contenido_completo]
     except ResourceExhausted:
-        return (
-            "⚠️ Has superado el límite gratuito de tokens por minuto. Intenta de nuevo en unos segundos o considera reducir el tamaño del contenido.",
-            "Límite alcanzado",
-            fragmentos_relevantes,
-        )
+        print("⚠️ Cuota del modelo pro agotada. Usando modelo flash.")
+        respuesta = generar_respuesta_con_modelo(MODELO_ALTERNATIVO, prompt)
+        return respuesta, MODELO_ALTERNATIVO, [contenido_completo]
     except Exception as e:
-        return f"❌ Error: {e}", "Error", fragmentos_relevantes
-
-    except Exception as e:
-        return f"❌ Error: {e}", "Error", fragmentos_relevantes
+        return f"❌ Error: {e}", "Error", [contenido_completo]
