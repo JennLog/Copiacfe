@@ -1,5 +1,8 @@
 import os
 import google.generativeai as genai
+import google.generativeai as genai
+genai.configure(api_key="AIzaSyCh9dXMJXAqDKA2qzjnYKomZ8N8hD9B2dA")
+
 from google.api_core.exceptions import ResourceExhausted
 from dotenv import load_dotenv
 
