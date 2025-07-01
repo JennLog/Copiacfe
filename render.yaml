@@ -1,0 +1,9 @@
+services:
+  - type: web
+    name: buscador-normas
+    env: python
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python app.py"
+    envVars:
+      - key: GEMINI_API_KEY
+        value: AIzaSyCh9dXMJXAqDKA2qzjnYKomZ8N8hD9B2dA
