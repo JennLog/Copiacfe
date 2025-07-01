@@ -32,7 +32,7 @@ def generar_respuesta_con_modelo(modelo_id, prompt):
 
 # Función principal que responde usando IA
 def responder_con_ia(pregunta):
-    contenido_util = todos_los_fragmentos[:2000]  # Limita a 2000 caracteres
+    contenido_util = todos_los_fragmentos[:5000]  # Limita a 5000 caracteres
 
     prompt = f"""
 Eres un asistente técnico experto en normas eléctricas. A continuación hay contenido normativo y una consulta.
