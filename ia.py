@@ -1,29 +1,32 @@
 import os
 import google.generativeai as genai
-import google.generativeai as genai
-genai.configure(api_key="AIzaSyCh9dXMJXAqDKA2qzjnYKomZ8N8hD9B2dA")
-
 from google.api_core.exceptions import ResourceExhausted
 from dotenv import load_dotenv
 
-load_dotenv()  # Cargar variables desde .env
+# Cargar variables desde .env (útil en desarrollo local)
+load_dotenv()
 
-# Configura la API
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
+# Configurar la API Key desde variable de entorno
+api_key = os.getenv("GEMINI_API_KEY")
+if not api_key:
+    raise ValueError("❌ No se encontró la variable de entorno GEMINI_API_KEY.")
+genai.configure(api_key=api_key)
 
+# Modelos disponibles
 MODELO_PREFERIDO = "models/gemini-1.5-pro-latest"
 MODELO_ALTERNATIVO = "models/gemini-1.5-flash-latest"
 
-# Cargar todos los fragmentos como texto (sin FAISS)
+# Cargar contenido normativo desde archivo
 with open("fragmentos.txt", "r", encoding="utf-8") as f:
     todos_los_fragmentos = f.read()
 
-# Función para generar respuesta
+# Función para generar respuesta con un modelo específico
 def generar_respuesta_con_modelo(modelo_id, prompt):
     modelo = genai.GenerativeModel(modelo_id)
     respuesta = modelo.generate_content(prompt)
     return respuesta.text.strip()
 
+# Función principal que responde usando IA
 def responder_con_ia(pregunta):
     prompt = f"""
 Eres un asistente técnico experto en normas eléctricas. A continuación hay contenido normativo y una consulta.
