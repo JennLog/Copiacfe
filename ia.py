@@ -15,6 +15,8 @@ genai.configure(api_key=api_key)
 # Modelos disponibles
 MODELO_PREFERIDO = "models/gemini-1.5-pro-latest"
 MODELO_ALTERNATIVO = "models/gemini-1.5-flash-latest"
+# Limitar a los primeros 2000 caracteres
+contenido_util = todos_los_fragmentos[:2000]
 
 # Cargar contenido normativo desde archivo
 try:
