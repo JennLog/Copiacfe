@@ -15,8 +15,6 @@ genai.configure(api_key=api_key)
 # Modelos disponibles
 MODELO_PREFERIDO = "models/gemini-1.5-pro-latest"
 MODELO_ALTERNATIVO = "models/gemini-1.5-flash-latest"
-# Limitar a los primeros 2000 caracteres
-contenido_util = todos_los_fragmentos[:2000]
 
 # Cargar contenido normativo desde archivo
 try:
@@ -34,19 +32,14 @@ def generar_respuesta_con_modelo(modelo_id, prompt):
 
 # Función principal que responde usando IA
 def responder_con_ia(pregunta):
-    try:
-        prompt = f"""..."""  # tu prompt aquí
-        respuesta = generar_respuesta_con_modelo(MODELO_PREFERIDO, prompt)
-        return respuesta, MODELO_PREFERIDO, []
-    except Exception as e:
-        print(f"❌ Error interno: {e}")
-        return f"❌ Error: {e}", "Error", []
+    contenido_util = todos_los_fragmentos[:2000]  # Limita a 2000 caracteres
 
+    prompt = f"""
 Eres un asistente técnico experto en normas eléctricas. A continuación hay contenido normativo y una consulta.
 Responde solamente con base en el contenido proporcionado, de forma clara y profesional.
 
 CONTENIDO:
-{todos_los_fragmentos}
+{contenido_util}
 
 PREGUNTA: {pregunta}
 
@@ -56,7 +49,10 @@ RESPUESTA:
         respuesta = generar_respuesta_con_modelo(MODELO_PREFERIDO, prompt)
         return respuesta, MODELO_PREFERIDO, []
     except ResourceExhausted:
-        respuesta = generar_respuesta_con_modelo(MODELO_ALTERNATIVO, prompt)
-        return respuesta, MODELO_ALTERNATIVO, []
+        return (
+            "⚠️ Has superado el límite gratuito de tokens por minuto. Intenta de nuevo en unos segundos o considera reducir el tamaño del contenido.",
+            "Límite alcanzado",
+            [],
+        )
     except Exception as e:
         return f"❌ Error: {e}", "Error", []
