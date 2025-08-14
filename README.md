@@ -1,8 +1,8 @@
-# 📚 Buscador Inteligente de Normas Eléctricas (CFE)
+#  Buscador Inteligente de Normas Eléctricas (CFE)
 
 Aplicación desarrollada en **Python** con **Flask** que permite consultar rápidamente las normas eléctricas emitidas por la Comisión Federal de Electricidad (CFE) mediante un buscador optimizado para personal técnico.
 
-## ✨ Características principales
+##  Características principales
 - 🔍 **Búsqueda por palabra clave** para encontrar normas específicas.
 - 📂 **Organización por categorías** para localizar más rápido la normativa.
 - 💻 **Interfaz amigable** y navegación sencilla para usuarios sin experiencia técnica.
@@ -14,7 +14,7 @@ Aplicación desarrollada en **Python** con **Flask** que permite consultar rápi
 - **HTML5**, **CSS3**, **JavaScript**
 - **SQLite** 
 
-## 🚀 Instalación y uso
+##  Instalación y uso
 1. Clonar el repositorio:
    ```bash
    git clone https://github.com/JennLog/Copiacfe
